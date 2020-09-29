@@ -71,7 +71,7 @@ router.post(
     if (githubusername) profileFields.githubusername = githubusername;
     if (company) profileFields.company = company;
     if (skills) {
-        profileFields.skills = skills.split(',').map(skill => skill.trim());
+      profileFields.skills = skills.split(",").map((skill) => skill.trim());
     }
 
     // Build social object
@@ -83,22 +83,25 @@ router.post(
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
-        let profile = await Profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
-        if(profile){
-            // Update the profile
-            profile = await Profile.findOneAndUpdate({ user: req.user.id }, { $set: profileFields }, { new: true });
-            return res.json(profile);
-        }
-
-        // Create a profile
-        profile = new Profile(profileFields);
-        await profile.save();
+      if (profile) {
+        // Update the profile
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
         return res.json(profile);
+      }
 
-    } catch(error) {
-        console.error(error.message);
-        return res.status(400).json('Server Error');
+      // Create a profile
+      profile = new Profile(profileFields);
+      await profile.save();
+      return res.json(profile);
+    } catch (error) {
+      console.error(error.message);
+      return res.status(400).json("Server Error");
     }
   }
 );
@@ -106,14 +109,37 @@ router.post(
 // @route   GET api/profile
 // @desc    Get all profiles
 // @access  Public
-router.get('/', async (req, res) => {
-    try {
-        const profiles = await Profile.find().populate('user', ['name', 'avatar']);
-        res.json(profiles);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/profile/user/:user_id
+// @desc    Get profile by userid
+// @access  Public
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profile) {
+      return res.status(400).json({ errors: [{ msg: "Profile not found" }] });
     }
-})
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ errors: [{ msg: "Profile not found" }] });
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
