@@ -1,7 +1,9 @@
 import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
 
-export const Register = () => {
+const Register = (props) => {
 
     const [formData, setFormData] = useState({
         name: '',
@@ -17,7 +19,7 @@ export const Register = () => {
         e.preventDefault();
 
         if(password != password2){
-            console.log('Passwords do no match');
+            props.setAlert('Passwords do no match', 'danger');
         } else {
             console.log('success')
         }
@@ -47,3 +49,5 @@ export const Register = () => {
         </Fragment>
     )
 }
+
+export default connect(null, { setAlert })(Register);
