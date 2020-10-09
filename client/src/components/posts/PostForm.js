@@ -8,7 +8,7 @@ const PostForm = ({ addPost }) => {
     return (
       <div className='post-form'>
         <div className='bg-primary p'>
-          <h3>Leave A Comment</h3>
+          <h3>Say Something...</h3>
         </div>
         <form className='form my-1' onSubmit={e => {
             e.preventDefault();
@@ -19,7 +19,7 @@ const PostForm = ({ addPost }) => {
             name='text'
             cols='30'
             rows='5'
-            placeholder='Comment on this post'
+            placeholder='Post here'
             required
             value={text}
             onChange={e => setText(e.target.value)}
