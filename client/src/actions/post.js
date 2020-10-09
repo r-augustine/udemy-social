@@ -11,7 +11,6 @@ export const getPosts = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: POST_ERROR,
       payload: {
@@ -31,7 +30,6 @@ export const getPost = (id) => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: POST_ERROR,
       payload: {

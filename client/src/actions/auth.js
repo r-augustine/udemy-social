@@ -24,7 +24,6 @@ export const loadUser = () => async (dispatch) => {
       type: USER_LOADED,
       payload: res.data,
     });
-    console.log(res.data);
   } catch (error) {
     dispatch({
       type: AUTH_ERROR,

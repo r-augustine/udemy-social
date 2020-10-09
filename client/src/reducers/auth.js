@@ -20,7 +20,6 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case USER_LOADED:
-      console.log(payload);
       return {
         ...state,
         isAuthenticated: true,
